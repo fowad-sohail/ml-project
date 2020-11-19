@@ -10,6 +10,8 @@ import os
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
+print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
+
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.fashion_mnist.load_data()
 
 # Add a new axis
