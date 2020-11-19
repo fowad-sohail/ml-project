@@ -6,6 +6,10 @@ from tensorflow.keras.layers import Dense, Flatten, Conv2D, AveragePooling2D
 from tensorflow.keras.utils import to_categorical
 import numpy as np
 
+import os
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.fashion_mnist.load_data()
 
 # Add a new axis
