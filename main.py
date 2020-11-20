@@ -5,6 +5,7 @@ from tensorflow.keras.losses import categorical_crossentropy
 from tensorflow.keras.layers import Dense, Flatten, Conv2D, AveragePooling2D
 from tensorflow.keras.utils import to_categorical
 import numpy as np
+from cleverhans.future.tf2.attacks import projected_gradient_descent, fast_gradient_method
 
 import os
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
@@ -58,3 +59,19 @@ model.summary()
 model.fit(x_train, y=y_train, 
           epochs=20, 
           validation_data=(x_test, y_test))
+
+
+# Attack
+sess = tf.Session()
+keras.backend.set_session(sess)
+
+wrap = KerasModelWrapper(model)
+fgsm = FastGradientMethod(wrap, sess=sess)
+fgsm_params = {'eps': 0.3,
+                'clip_min': 0.,
+                'clip_max': 1.}
+adversarial_x_test = fgsm.generate(x_test, **fgsm_params)
+preds_adv = model(adversarial_x_test)
+
+# model.evaluate(x=adversarial_x_test, y=y_test, verbose=1)
+acc = model_eval(sess, x_train, y_train, preds_adv, x_test, y_test)
