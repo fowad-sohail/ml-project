@@ -49,3 +49,10 @@ model = lenet_sequential(num_classes, input_shape)
 model.fit({'feature': x_train, 'label': y_train}, epochs=20, verbose=1)
 model.evaluate({'feature': x_test, 'label': y_test})
 model.save('lenet_reg_20epoch')
+
+
+# Attack
+adversarial_x_test = fast_gradient_method(model, x_test, 0.3, np.inf)
+
+print(model.evaluate(x=adversarial_x_test, y=y_test, verbose=1))
+
