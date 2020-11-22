@@ -6,6 +6,7 @@ from tensorflow.keras.layers import Dense, Flatten, Conv2D, AveragePooling2D, In
 from tensorflow.keras.utils import to_categorical
 import numpy as np
 import neural_structured_learning as nsl
+from cleverhans.future.tf2.attacks import fast_gradient_method
 
 # Load Fashion-MNIST Dataset
 input_shape = (28, 28)
@@ -48,11 +49,11 @@ model = lenet_sequential(num_classes, input_shape)
 # Train and save model
 model.fit({'feature': x_train, 'label': y_train}, epochs=20, verbose=1)
 model.evaluate({'feature': x_test, 'label': y_test})
-model.save('lenet_reg_20epoch')
+# model.save('lenet_reg_20epoch')
 
 
 # Attack
 adversarial_x_test = fast_gradient_method(model, x_test, 0.3, np.inf)
 
-print(model.evaluate(x=adversarial_x_test, y=y_test, verbose=1))
+print(model.evaluate(x=adversarial_x_test, y=y_test))
 
