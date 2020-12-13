@@ -41,9 +41,9 @@ adv_model = train.train_regularize(selected_model(), epochs, adv_mult, adv_step,
 #print("0.1 Noise in Reg Model", attack.evaluate_regularize(adv_model, (x_test_noise_01, y_test)))
 
 x_test_adv = attack.generate_attack(model, x_test, attack_eps, attack_norm)
-x_test_noise_001_adv = attack.generate_attack(model, x_test_noise_001, attack_eps, attack_norm)
-x_test_noise_005_adv = attack.generate_attack(model, x_test_noise_005, attack_eps, attack_norm)
-x_test_noise_01_adv = attack.generate_attack(model, x_test_noise_01, attack_eps, attack_norm)
+x_test_noise_001_adv = noise.add_noise(x_test_adv, 0.01)
+x_test_noise_005_adv = noise.add_noise(x_test_adv, 0.05)
+x_test_noise_01_adv = noise.add_noise(x_test_adv, 0.1)
 
 #print("Attacked Model", attack.evaluate(model, (x_test_adv, y_test_cat)))
 #print("Attacked Reg Model", attack.evaluate_regularize(adv_model, (x_test_adv, y_test)))
